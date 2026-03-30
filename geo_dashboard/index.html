@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEO Medical — AI Visibility Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L3 7v10l9 5 9-5V7L12 2z" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+        <path d="M12 8v8M8 10l4-2 4 2" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">GEO Medical</span>
+      <span class="logo-sub">AI Visibility Platform</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Platform</div>
+    <button class="nav-item active" data-page="diagnosis" onclick="switchPage('diagnosis', this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10 7v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M6 3.5L4 2M14 3.5L16 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Diagnosis</span>
+      <span class="nav-badge">12</span>
+    </button>
+    <button class="nav-item" data-page="optimization" onclick="switchPage('optimization', this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2l2.5 5 5.5.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.5-.8L10 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      <span>Optimization</span>
+    </button>
+    <button class="nav-item" data-page="monitoring" onclick="switchPage('monitoring', this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M5 12l3-4 3 3 2-3 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Monitoring</span>
+    </button>
+
+    <div class="nav-section-label" style="margin-top:20px;">Settings</div>
+    <button class="nav-item" onclick="void(0)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Account</span>
+    </button>
+    <button class="nav-item" onclick="void(0)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="system-status">
+      <span class="status-dot"></span>
+      <span>All systems operational</span>
+    </div>
+    <div class="version-tag">v2.4.1</div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
+<header class="topbar" id="topbar">
+  <div class="topbar-left">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="6.5" cy="6.5" r="4.5" stroke="var(--text-muted)" stroke-width="1.5"/>
+        <path d="M10 10l3.5 3.5" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="Search keywords, hospitals, topics…" id="globalSearch" oninput="handleSearch(this.value)" />
+      <span class="search-kbd">⌘K</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="date-range-picker">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M4 1v2M10 1v2M1 6h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <select class="date-select" id="dateRange" onchange="updateDateRange(this.value)">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="365">Last 12 months</option>
+      </select>
+    </div>
+
+    <div class="geo-badge-wrap">
+      <div class="geo-badge" id="globalGeoBadge">
+        <div class="geo-badge-pulse"></div>
+        <span class="geo-badge-label">GEO Score</span>
+        <span class="geo-badge-value" id="globalGeoValue">74</span>
+      </div>
+    </div>
+
+    <div class="topbar-divider"></div>
+
+    <div class="user-profile">
+      <div class="user-avatar">SN</div>
+      <div class="user-info">
+        <span class="user-name">Seoul National Hospital</span>
+        <span class="user-role">Admin</span>
+      </div>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M3 4.5L6 7.5L9 4.5" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<main class="main-content" id="mainContent">
+
+  <!-- ===== PAGE: DIAGNOSIS ===== -->
+  <section class="page" id="page-diagnosis">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">AI Citation Intelligence</h1>
+        <p class="page-subtitle">Track how AI engines discover and cite your hospital across the web</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-ghost" onclick="refreshDiagnosis()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.4 4.5M2 2v3h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Refresh
+        </button>
+        <button class="btn btn-primary">Export Report</button>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row" id="kpiRow">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Section 1: Citation Bar Chart -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">AI Citation Frequency</h3>
+            <p class="card-desc">Monthly citation count by engine</p>
+          </div>
+          <div class="legend-row" id="citationLegend"></div>
+        </div>
+        <div class="chart-area" style="height:220px;">
+          <canvas id="citationBarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Section 3: Context Analysis -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Context Analysis</h3>
+            <p class="card-desc">Sentiment distribution & top keywords</p>
+          </div>
+        </div>
+        <div class="sentiment-row">
+          <div class="sentiment-item positive">
+            <div class="sentiment-bar-wrap">
+              <div class="sentiment-bar" id="sentBar-positive" style="height:0%"></div>
+            </div>
+            <span class="sentiment-pct" id="sentPct-positive">0%</span>
+            <span class="sentiment-label">Positive</span>
+          </div>
+          <div class="sentiment-item neutral">
+            <div class="sentiment-bar-wrap">
+              <div class="sentiment-bar" id="sentBar-neutral" style="height:0%"></div>
+            </div>
+            <span class="sentiment-pct" id="sentPct-neutral">0%</span>
+            <span class="sentiment-label">Neutral</span>
+          </div>
+          <div class="sentiment-item negative">
+            <div class="sentiment-bar-wrap">
+              <div class="sentiment-bar" id="sentBar-negative" style="height:0%"></div>
+            </div>
+            <span class="sentiment-pct" id="sentPct-negative">0%</span>
+            <span class="sentiment-label">Negative</span>
+          </div>
+        </div>
+        <div class="keyword-tags" id="keywordTags"></div>
+      </div>
+    </div>
+
+    <!-- Section 2: Live Citation Feed -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Real-time Citation Feed</h3>
+          <p class="card-desc">Live AI citations mentioning your hospital</p>
+        </div>
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span>Live</span>
+        </div>
+      </div>
+      <div class="citation-feed" id="citationFeed">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Section 4: Keyword Log Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Keyword Log Analysis</h3>
+          <p class="card-desc">AI exposure metrics for tracked keywords</p>
+        </div>
+        <div class="filter-row">
+          <select class="filter-select" id="deptFilter" onchange="filterKeywords()">
+            <option value="all">All Departments</option>
+            <option value="dermatology">Dermatology</option>
+            <option value="plastic">Plastic Surgery</option>
+            <option value="dental">Dental</option>
+            <option value="hair">Hair Transplant</option>
+          </select>
+          <select class="filter-select" id="sortFilter" onchange="filterKeywords()">
+            <option value="exposure">Sort: Exposure</option>
+            <option value="rank">Sort: Rank</option>
+            <option value="trend">Sort: Trend</option>
+          </select>
+        </div>
+      </div>
+      <div class="kw-table-wrap">
+        <table class="kw-table" id="keywordTable">
+          <thead>
+            <tr>
+              <th>Keyword</th>
+              <th>AI Exposure</th>
+              <th>Top Engine</th>
+              <th>Rank</th>
+              <th>Dept.</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="keywordTableBody">
+            <!-- filled by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAGE: OPTIMIZATION ===== -->
+  <section class="page hidden" id="page-optimization">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">GEO Optimization Engine</h1>
+        <p class="page-subtitle">Generate AI-optimized content to increase citation visibility</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary">Run Full Audit</button>
+      </div>
+    </div>
+
+    <!-- Section 1: Multi-language Optimization -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Multi-language Optimization</h3>
+          <p class="card-desc">Optimize your content for global AI engine visibility</p>
+        </div>
+        <span class="badge badge-blue">10 Languages</span>
+      </div>
+      <div class="lang-grid" id="langGrid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Section 2: AI Content Generator -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">AI Content Generator</h3>
+          <p class="card-desc">Generate GEO-optimized medical content for AI engine citation</p>
+        </div>
+      </div>
+      <div class="generator-wrap">
+        <div class="generator-input-row">
+          <input type="text" class="gen-input" id="genKeyword" placeholder="e.g. hair transplant Korea, dermatology Seoul cost…" />
+          <select class="filter-select" id="genDept">
+            <option value="dermatology">Dermatology</option>
+            <option value="plastic">Plastic Surgery</option>
+            <option value="dental">Dental</option>
+            <option value="hair">Hair Transplant</option>
+          </select>
+          <button class="btn btn-primary" id="genBtn" onclick="generateContent()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4H13l-3.5 2.6 1.3 4L7 9.1 3.2 11.6l1.3-4L1 5h4.5L7 1z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+            Generate
+          </button>
+        </div>
+        <div class="gen-output hidden" id="genOutput">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Gap Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Gap Analysis</h3>
+          <p class="card-desc">Keywords with low or zero AI visibility — high-value opportunities</p>
+        </div>
+        <span class="badge badge-orange" id="gapCount">0 gaps found</span>
+      </div>
+      <div class="gap-list" id="gapList">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAGE: MONITORING ===== -->
+  <section class="page hidden" id="page-monitoring">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">AI Visibility Monitoring</h1>
+        <p class="page-subtitle">Your real-time GEO score and competitive intelligence</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-ghost">Schedule Report</button>
+        <button class="btn btn-primary">Share Dashboard</button>
+      </div>
+    </div>
+
+    <!-- Section 1: GEO Score Dashboard -->
+    <div class="geo-score-grid">
+      <div class="card geo-main-card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Overall GEO Score</h3>
+            <p class="card-desc">Composite AI visibility index</p>
+          </div>
+          <span class="badge badge-blue">Live</span>
+        </div>
+        <div class="geo-gauge-wrap">
+          <canvas id="geoGauge" width="220" height="140"></canvas>
+          <div class="geo-gauge-center" id="geoGaugeCenter">
+            <span class="geo-score-big" id="geoScoreBig">74</span>
+            <span class="geo-score-label">/ 100</span>
+            <span class="geo-score-grade" id="geoScoreGrade">Good</span>
+          </div>
+        </div>
+        <div class="geo-change-row">
+          <span class="change-up">↑ +3.2 pts</span>
+          <span class="change-period">vs last month</span>
+        </div>
+      </div>
+
+      <div class="geo-sub-scores">
+        <div class="card sub-score-card" id="subScore-visibility">
+          <div class="sub-score-header">
+            <span class="sub-score-name">Visibility</span>
+            <span class="sub-score-weight">×0.4</span>
+          </div>
+          <div class="sub-score-value" id="subVal-visibility">0</div>
+          <div class="sub-score-bar-track"><div class="sub-score-bar" id="subBar-visibility" style="width:0%"></div></div>
+          <div class="sub-score-desc">AI engine mention rate</div>
+        </div>
+        <div class="card sub-score-card" id="subScore-coverage">
+          <div class="sub-score-header">
+            <span class="sub-score-name">Coverage</span>
+            <span class="sub-score-weight">×0.3</span>
+          </div>
+          <div class="sub-score-value" id="subVal-coverage">0</div>
+          <div class="sub-score-bar-track"><div class="sub-score-bar" id="subBar-coverage" style="width:0%"></div></div>
+          <div class="sub-score-desc">Keyword coverage ratio</div>
+        </div>
+        <div class="card sub-score-card" id="subScore-authority">
+          <div class="sub-score-header">
+            <span class="sub-score-name">Authority</span>
+            <span class="sub-score-weight">×0.2</span>
+          </div>
+          <div class="sub-score-value" id="subVal-authority">0</div>
+          <div class="sub-score-bar-track"><div class="sub-score-bar" id="subBar-authority" style="width:0%"></div></div>
+          <div class="sub-score-desc">Source quality index</div>
+        </div>
+        <div class="card sub-score-card" id="subScore-sentiment">
+          <div class="sub-score-header">
+            <span class="sub-score-name">Sentiment</span>
+            <span class="sub-score-weight">×0.1</span>
+          </div>
+          <div class="sub-score-value" id="subVal-sentiment">0</div>
+          <div class="sub-score-bar-track"><div class="sub-score-bar" id="subBar-sentiment" style="width:0%"></div></div>
+          <div class="sub-score-desc">Positive mention ratio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Competitor Comparison -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Competitor Comparison</h3>
+          <p class="card-desc">Head-to-head GEO performance vs competitors</p>
+        </div>
+      </div>
+      <div class="competitor-grid" id="competitorGrid">
+        <!-- filled by JS -->
+      </div>
+      <div class="chart-area" style="height:200px; margin-top:20px;">
+        <canvas id="competitorChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Section 3: Department Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Department Analysis</h3>
+          <p class="card-desc">GEO performance breakdown by specialty</p>
+        </div>
+      </div>
+      <div class="dept-tabs">
+        <button class="dept-tab active" onclick="switchDept('dermatology', this)">Dermatology</button>
+        <button class="dept-tab" onclick="switchDept('plastic', this)">Plastic Surgery</button>
+        <button class="dept-tab" onclick="switchDept('dental', this)">Dental</button>
+      </div>
+      <div class="dept-content" id="deptContent">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Section 4: Trend Graph -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Visibility Trends</h3>
+          <p class="card-desc">AI visibility and GEO score over time</p>
+        </div>
+        <div class="legend-row" id="trendLegend"></div>
+      </div>
+      <div class="chart-area" style="height:240px;">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     LOADING OVERLAY
+============================================================ -->
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="loading-card">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loadingText">Generating content…</div>
+    <div class="loading-sub">Optimizing for AI engine visibility</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
